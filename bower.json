@@ -1,6 +1,6 @@
 {
   "name": "zoomable_labels",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "",
   "authors": [
     "Peter Kerpedjiev <pkerpedjiev@gmail.com>"
@@ -10,7 +10,7 @@
     "dist/scripts/zoomable_labels.js"
   ],
   "moduleType": "es6",
-  "keywords": [ ],
+  "keywords": [],
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -22,6 +22,5 @@
   "dependencies": {
     "d3": "~3.5.13",
     "jquery": "~2.2.0"
-  },
-  "version": "0.8.1"
+  }
 }
