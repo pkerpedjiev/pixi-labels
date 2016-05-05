@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><title>Example</title></head><body><script src="scripts/zoomable_labels.js"></script><div id="circle"></div><script type="text/javascript">let width = 500, height = 500;
+
+let svg = d3.select('#circle').append('svg')
+.attr('width', width)
+.attr('height', height)
+
+let margin = {'left': 20, 'top': 20, 'right': 20, 'bottom': 20};
+
+let gMain = svg.append('g')
+.attr('transform', `translate(${margin.left})`);
+
+let paneRect = gMain.append('rect')
+.attr('fill', 'transparent')
+.attr('width', width)
+.attr('height', height)
+
+let minX = 0, minY = 0;
+let maxX = 10, maxY = 10;
+let format = d3.format(".2n")
+
+points = d3.range(0,100).map((d) => { 
+    let dotSize = 10 * Math.random();
+
+    return {'x': minX + (maxX - minX) * Math.random(),
+            'y': minY + (maxY - minY) * Math.random(),
+            'r': 10 * Math.random(),
+            'label': format(dotSize),
+            'uid': d.toString()}});
+
+let xScale = d3.scale.linear().domain([minX, maxX]).range([ 0, width - margin.left - margin.right])
+let yScale = d3.scale.linear().domain([minY, maxY]).range([ 0, height - margin.top - margin.bottom])
+
+let zoom = d3.behavior.zoom()
+    .x(xScale)
+    .y(yScale)
+    .on('zoom', draw)
+
+gMain.call(zoom);
+
+let gCircles = gMain.selectAll('.circle-g')
+.data(points)
+.enter()
+.append('g')
+.classed('circle-g', true);
+
+let labelId = (d) => { return `n-${d.uid}` };
+
+let circles = gCircles.append('circle').attr('opacity', 0.2).classed('circle-marker', true);
+let circleTexts = gCircles.append('text')
+    .classed('zoomable-label', true).attr('id', labelId);
+
+let zoomableLabels = zoomable_labels.ZoomableLabels()
+.markerClass('.circle-marker')
+.labelClass('.zoomable-label')
+.labelParent(gMain)
+.labelMarkerId(labelId)
+.labelClass('.zoomable-label')
+
+function draw() {
+    circles.attr('cx', (d) => { return xScale(d.x); })
+        .attr('cy', (d) => { return yScale(d.y); })
+        .attr('r', (d) => { return d.r; })
+        .attr('fill', 'black')
+
+    circleTexts.attr('x', (d) => { return xScale(d.x); })
+    .attr('y', (d) => { return yScale(d.y) - d.r - 2; })
+    .text((d) => { return d.label })
+    .attr('text-anchor', 'middle');
+
+    gMain.call(zoomableLabels);
+}
+
+
+draw();</script></body></html>
