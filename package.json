@@ -1,6 +1,6 @@
 {
   "name": "zoomable_labels",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Labels that show and hide themselves when zooming into or out of a plot.",
   "author": "Peter Kerpedjiev <pkerpedjiev@gmail.com>",
   "main": "dist/scripts/zoomable_labels.js",
