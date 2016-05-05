@@ -6,4 +6,5 @@ let zoomableLabels = zoomable_labels.ZoomableLabels()
 .labelClass('.zoomable-label')
 .labelParent(gMain)
 .labelMarkerId(labelId)
+.uidString('name')
 ```
