@@ -13,6 +13,7 @@ export function ZoomableLabels() {
     let markerPreviouslyVisible = {};
 
     let visibilityCounter = 0;
+    let uidString = 'uid';
 
     function intersectRect(r1, r2, padding) {
         if (arguments.length < 3)
@@ -42,17 +43,17 @@ export function ZoomableLabels() {
         .attr('visibility', 'visible');
 
         textLabels.each(function(d) {
-            if (d.uid in previouslyVisible)
+            if (d[uidString] in previouslyVisible)
                 d.shown = true;
         });
 
         markerObjs.each(function(d) {
-            if (d.uid in markerPreviouslyVisible)
+            if (d[uidString] in markerPreviouslyVisible)
                 d.markerShown = true;
         })
         .on('mouseover', function(d) {
-            console.log('uid:', d.uid);
-            console.log('pv:', d.name, markerPreviouslyVisible[d.uid] - 1458700000000, d.cumarea);
+            console.log('uid:', d[uidString]);
+            console.log('pv:', d.name, markerPreviouslyVisible[d[uidString]] - 1458700000000, d.cumarea);
         });;
 
 
@@ -60,15 +61,15 @@ export function ZoomableLabels() {
         let rectRects = {};
 
         textLabels.each(function(d) {
-            textRects[d.uid] = this.getBoundingClientRect();
-            rectRects[d.uid] = labelParent.select('#' + labelMarkerId(d)).node().getBoundingClientRect();
+            textRects[d[uidString]] = this.getBoundingClientRect();
+            rectRects[d[uidString]] = labelParent.select('#' + labelMarkerId(d)).node().getBoundingClientRect();
         });
 
         //console.log('-------------------');
         objs.forEach(function(d,i) {
             //console.log('d:', d.area);
-            let bb1 = textRects[d.uid];
-            let rb1 = rectRects[d.uid];
+            let bb1 = textRects[d[uidString]];
+            let rb1 = rectRects[d[uidString]];
 
             let rectIntersect = false;
             let labelIntersect = false;
@@ -77,14 +78,14 @@ export function ZoomableLabels() {
                 if (d == e)
                     return;
 
-                let bb2 = textRects[e.uid]; 
-                let rb2 = rectRects[e.uid]; 
+                let bb2 = textRects[e[uidString]]; 
+                let rb2 = rectRects[e[uidString]]; 
 
                 if (e.shown && intersectRect(bb1, bb2, 2)) {
                     labelIntersect = true;
 
                     if (d.shown) {
-                        if (previouslyVisible[d.uid] <= previouslyVisible[e.uid])
+                        if (previouslyVisible[d[uidString]] <= previouslyVisible[e[uidString]])
                             e.shown = false;
 
                     }
@@ -95,28 +96,23 @@ export function ZoomableLabels() {
                     let uid1 = '8e8aa';
                     let uid2 = '1ef59';
 
-                    if (d.uid.search(uid1) >= 0 && e.uid.search(uid2) >= 0) {
+                    if (d[uidString].search(uid1) >= 0 && e[uidString].search(uid2) >= 0) {
                         contact = true;
                         //console.log('contact');
                     }
 
-                    if (e.uid.search(uid1) >= 0 && d.uid.search(uid2) >= 0) {
+                    if (e[uidString].search(uid1) >= 0 && d[uidString].search(uid2) >= 0) {
                         contact = true;
                         //console.log('contact');
                     }
 
                     if (d.shown) {
-                        if (previouslyVisible[d.uid] <= previouslyVisible[e.uid])
+                        if (previouslyVisible[d[uidString]] <= previouslyVisible[e[uidString]])
                             e.shown = false;
                     }
 
                     if (d.markerShown) {
-                        /*
-                        if (contact)
-                            console.log('markerPreviouslyVisible', markerPreviouslyVisible[d.uid],
-                                        markerPreviouslyVisible[e.uid]);
-                                        */
-                        if (markerPreviouslyVisible[d.uid] <= markerPreviouslyVisible[e.uid])
+                        if (markerPreviouslyVisible[d[uidString]] <= markerPreviouslyVisible[e[uidString]])
                             e.markerShown = false;
                     }
 
@@ -130,16 +126,16 @@ export function ZoomableLabels() {
                 d.shown = true;
                 d.markerShown = true;
 
-                if (!(d.uid in previouslyVisible)) {
-                    previouslyVisible[d.uid] = visibilityCounter;
-                    markerPreviouslyVisible[d.uid] = visibilityCounter;
+                if (!(d[uidString] in previouslyVisible)) {
+                    previouslyVisible[d[uidString]] = visibilityCounter;
+                    markerPreviouslyVisible[d[uidString]] = visibilityCounter;
                     visibilityCounter += 1;
                 }
             } else if (!rectIntersect) {
                 d.markerShown = true;
 
-                if (!(d.uid in markerPreviouslyVisible)) {
-                    markerPreviouslyVisible[d.uid] = date.getTime();
+                if (!(d[uidString] in markerPreviouslyVisible)) {
+                    markerPreviouslyVisible[d[uidString]] = date.getTime();
                 }
             }
         });
@@ -180,6 +176,12 @@ export function ZoomableLabels() {
     chart.markerClass = function(_) {
         if (!arguments.length) return markerClass;
         markerClass = _;
+        return chart;
+    }
+    
+    chart.uidString = function(_) {
+        if (!arguments.length) return uidString;
+        uidString = _;
         return chart;
     }
 

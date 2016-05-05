@@ -41,7 +41,7 @@ points = d3.range(0,100).map((d) => {
             'y': minY + (maxY - minY) * Math.random(),
             'r': 10 * Math.random(),
             'label': format(dotSize),
-            'uid': d.toString()}});
+            'name': d.toString()}});
 
 let xScale = d3.scale.linear().domain([minX, maxX]).range([ 0, width - margin.left - margin.right])
 let yScale = d3.scale.linear().domain([minY, maxY]).range([ 0, height - margin.top - margin.bottom])
@@ -59,7 +59,7 @@ let gCircles = gMain.selectAll('.circle-g')
 .append('g')
 .classed('circle-g', true);
 
-let labelId = (d) => { return `n-${d.uid}` };
+let labelId = (d) => { return `n-${d.name}` };
 
 let circles = gCircles.append('circle').attr('opacity', 0.2).classed('circle-marker', true);
 let circleTexts = gCircles.append('text')
@@ -70,6 +70,7 @@ let zoomableLabels = zoomable_labels.ZoomableLabels()
 .labelClass('.zoomable-label')
 .labelParent(gMain)
 .labelMarkerId(labelId)
+.uidString('name')
 
 function draw() {
     circles.attr('cx', (d) => { return xScale(d.x); })
