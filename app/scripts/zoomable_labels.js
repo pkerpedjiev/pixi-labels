@@ -51,10 +51,6 @@ export function ZoomableLabels() {
             if (d[uidString] in markerPreviouslyVisible)
                 d.markerShown = true;
         })
-        .on('mouseover', function(d) {
-            console.log('uid:', d[uidString]);
-            console.log('pv:', d.name, markerPreviouslyVisible[d[uidString]] - 1458700000000, d.cumarea);
-        });;
 
 
         let textRects = {};
