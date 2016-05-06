@@ -62,7 +62,7 @@ export function ZoomableLabels() {
 
         textLabels.each(function(d) {
             textRects[d[uidString]] = this.getBoundingClientRect();
-            rectRects[d[uidString]] = labelParent.select('#' + labelMarkerId(d)).node().getBoundingClientRect();
+            rectRects[d[uidString]] = d3.select(this.parentNode).select('#' + labelMarkerId(d)).node().getBoundingClientRect();
         });
 
         //console.log('-------------------');
@@ -121,7 +121,6 @@ export function ZoomableLabels() {
 
             });
 
-            let date = new Date();
             if (!labelIntersect && !rectIntersect) {
                 d.shown = true;
                 d.markerShown = true;
@@ -135,7 +134,8 @@ export function ZoomableLabels() {
                 d.markerShown = true;
 
                 if (!(d[uidString] in markerPreviouslyVisible)) {
-                    markerPreviouslyVisible[d[uidString]] = date.getTime();
+                    markerPreviouslyVisible[d[uidString]] = visibilityCounter;
+                    visibilityCounter += 1;
                 }
             }
         });
