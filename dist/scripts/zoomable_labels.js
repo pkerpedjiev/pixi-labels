@@ -118,17 +118,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        markerObjs.each(function (d) {
 	            if (d[uidString] in markerPreviouslyVisible) d.markerShown = true;
-	        }).on('mouseover', function (d) {
-	            console.log('uid:', d[uidString]);
-	            console.log('pv:', d.name, markerPreviouslyVisible[d[uidString]] - 1458700000000, d.cumarea);
-	        });;
+	        });
 
 	        var textRects = {};
 	        var rectRects = {};
 
 	        textLabels.each(function (d) {
 	            textRects[d[uidString]] = this.getBoundingClientRect();
-	            rectRects[d[uidString]] = _d2.default.select(this.parentNode).select('#' + labelMarkerId(d)).node().getBoundingClientRect();
+	            if (labelMarkerId != null) rectRects[d[uidString]] = _d2.default.select(this.parentNode).select('#' + labelMarkerId(d)).node().getBoundingClientRect();
 	        });
 
 	        //console.log('-------------------');
@@ -154,7 +151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 
-	                if (e.markerShown && intersectRect(rb1, rb2, 1)) {
+	                if (e.markerShown && labelMarkerId != null && intersectRect(rb1, rb2, 1)) {
 	                    var contact = false;
 	                    var uid1 = '8e8aa';
 	                    var uid2 = '1ef59';

@@ -58,7 +58,8 @@ export function ZoomableLabels() {
 
         textLabels.each(function(d) {
             textRects[d[uidString]] = this.getBoundingClientRect();
-            rectRects[d[uidString]] = d3.select(this.parentNode).select('#' + labelMarkerId(d)).node().getBoundingClientRect();
+            if (labelMarkerId != null)
+                rectRects[d[uidString]] = d3.select(this.parentNode).select('#' + labelMarkerId(d)).node().getBoundingClientRect();
         });
 
         //console.log('-------------------');
@@ -87,7 +88,7 @@ export function ZoomableLabels() {
                     }
                 }
 
-                if (e.markerShown && intersectRect(rb1, rb2, 1)) {
+                if (e.markerShown && labelMarkerId != null && intersectRect(rb1, rb2, 1)) {
                     let contact = false;
                     let uid1 = '8e8aa';
                     let uid2 = '1ef59';
