@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
   context: __dirname + '/app',
-  entry: {zoomable_labels: ['./scripts/zoomable_labels.js']},
+  entry: {pixiLabels: ['./scripts/pixiLabels.js']},
   output: {
     path: __dirname + '/build',
     filename: '[name].js',
