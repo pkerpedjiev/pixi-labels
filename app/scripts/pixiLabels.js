@@ -115,17 +115,17 @@ function draw() {
     //console.log('boxes[0]', boxes[0], boxes[1]);
 
     var result = boxIntersect(boxes, function(i,j) {
-        if (texts[i].alpha > 0 && texts[j].alpha > 0) {
             if (points[i].r > points[j].r)
                 texts[j].alpha = 0;
             else
                 texts[i].alpha = 0;
-        }
     })
 
     //console.log('boxes:', boxes);
     //console.log('text', text.getBounds());
 }
+
+draw();
 
 
 }
